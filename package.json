@@ -1,0 +1,49 @@
+{
+  "name": "@ohd-tools/ohd-config",
+  "version": "0.11.1",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "npx tsc",
+    "lint": "npx eslint ./src/ --fix && npx prettier ./src/ --write",
+    "document": "npx typedoc ./src/index.ts --includeVersion --cname ohdutils.docs.ohd.tools --plugin typedoc-plugin-missing-exports --excludeExternals true --internalModule internal"
+  },
+  "keywords": [
+    "Operation Harsh Doorstop",
+    "OHD",
+    "INI"
+  ],
+  "author": "bombitmanbomb",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/ini": "^4.1.0",
+    "@types/node": "20.11.20",
+    "@typescript-eslint/eslint-plugin": "7.0.0",
+    "@typescript-eslint/parser": "6.20.0",
+    "eslint": "8.57.0",
+    "prettier": "3.2.5",
+    "typedoc": "0.25.9",
+    "typedoc-plugin-missing-exports": "^2.2.0",
+    "typescript": "5.3.3",
+    "vitest": "^1.1.3"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afocommunity/OHD-RCON.git"
+  },
+  "bugs": {
+    "url": "https://github.com/afocommunity/OHD-RCON/issues"
+  },
+  "homepage": "https://github.com/afocommunity/OHD-RCON#readme",
+  "description": "An RCON Interface for Operation: Harsh Doorstop",
+  "dependencies": {
+    "ini": "^4.1.2"
+  }
+}
