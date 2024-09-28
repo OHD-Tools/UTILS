@@ -38,17 +38,17 @@ export interface IGameIni {
   Voting_DisableVACBanCheckWhileAdminIsOnline: boolean;
   Voting_OnlyAdminsCanInitiateVote: boolean;
 
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
-  AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
+  // AccessControl_;
 }
 type GameIniRawContents = {
   ['/Script/RCON']: {
@@ -144,6 +144,12 @@ const gameIniDefault: IGameIni = {
 
   Voting_BanDuration: 300.0,
   Voting_PassRatio: 0.51,
+  Voting_Duration: 0,
+  Voting_PassedVoteCooldown: 0,
+  Voting_FailedVoteCooldown: 0,
+  Voting_DenyVACBannedUsersFromVoting: false,
+  Voting_DisableVACBanCheckWhileAdminIsOnline: false,
+  Voting_OnlyAdminsCanInitiateVote: false,
 };
 
 const toBoolean = (b: boolean): IniBoolean => (b ? 'True' : 'False');
@@ -156,10 +162,14 @@ export class GameINI {
     if (typeof settings == 'string') return GameINI.parse(settings);
     this.Settings = { ...gameIniDefault, ...settings };
   }
+
   public static parse(fileContent: string): GameINI {
-    const config: IGameIni = {};
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const config: IGameIni = {} as IGameIni;
     const raw = parse(fileContent) as GameIniRawContents;
+    return new GameINI(raw as unknown as IGameIni);
   }
+
   public toString() {
     const s = this.Settings;
     const fileRaw: GameIniRawContents = {
@@ -226,12 +236,12 @@ export class GameINI {
         bDenyGameBannedUsers: 'True',
         bDenyCommunityBannedUsers: 'True',
         bDenyUsersWithPrivateProfiles: 'True',
-        NumVACBansAllowed: '',
-        NumGameBansAllowed: '',
-        NumBanAgeDaysAllowed: '',
-        MinRequiredAccountAgeDays: '',
-        MinRequiredAccountPlaytimeHours: '',
-        MaxLoginQueryCacheAgeMinutes: '',
+        NumVACBansAllowed: '-1',
+        NumGameBansAllowed: '-1',
+        NumBanAgeDaysAllowed: '-1',
+        MinRequiredAccountAgeDays: '-1',
+        MinRequiredAccountPlaytimeHours: '-1',
+        MaxLoginQueryCacheAgeMinutes: '-1',
       },
     };
     return stringify(fileRaw, { sort: true });
