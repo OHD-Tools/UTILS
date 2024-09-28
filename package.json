@@ -24,7 +24,7 @@
     "eslint": "8.57.1",
     "prettier": "3.2.5",
     "typedoc": "0.25.9",
-    "typedoc-plugin-missing-exports": "^2.2.0",
+    "typedoc-plugin-missing-exports": "^3.0.0",
     "typescript": "5.3.3",
     "vitest": "^1.1.3"
   },
