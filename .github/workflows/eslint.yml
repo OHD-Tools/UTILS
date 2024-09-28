@@ -11,4 +11,4 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
-      - run: npx eslint ./src/*
+      - run: npm run lint
