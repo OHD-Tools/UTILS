@@ -31,7 +31,7 @@
     "vitest": "2.1.1"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "directories": {
     "lib": "lib"
