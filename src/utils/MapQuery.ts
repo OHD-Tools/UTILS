@@ -66,52 +66,42 @@ export default class MapQuery {
     this.BluforNumTickets = $b.BluforNumTickets ?? 500;
     this.OpforNumTickets = $b.OpforNumTickets ?? 500;
   }
-
   static parse(query: string): Partial<MapQueryProps> {
+    const parsed: Partial<MapQueryProps> = {};
     const map = /^(\w+)/gi.exec(query)?.[1];
-    const parsed = new Map<string, string>();
-    for (const [k, v] of new URLSearchParams(
-      query.slice(query.indexOf('?') + 1),
-    )) {
-      parsed.set(k.toLowerCase(), v);
-    }
-    const mapQueryData: Partial<MapQueryProps> = {};
-
-    const BluforFaction = parsed.get('bluforfaction') as string;
-    const OpforFaction = parsed.get('opforfaction') as string;
-    const Game = parsed.get('game') as string;
-    const MinPlayers = parsed.get('minplayers') as string;
-    const MaxPlayers = parsed.get('maxplayers') as string;
-    const bDisableKitRestrictions = parsed.get(
-      'bdisablekitrestrictions',
-    ) as string;
-    const bBotAutofill = parsed.get('bbotautofill') as string;
-    const BluforNumBots = parsed.get('blufornumbots') as string;
-    const OpforNumBots = parsed.get('opfornumbots') as string;
-    const BluforNumTickets = parsed.get('blufornumtickets') as string;
-    const OpforNumTickets = parsed.get('opfornumtickets') as string;
-    const AutoFillHuman = parsed.get('autofillhuman') as string;
-    mapQueryData.Map = map as Maps;
-    mapQueryData.Game = Game;
-    mapQueryData.BluforFaction = BluforFaction;
-    mapQueryData.OpforFaction = OpforFaction;
-    mapQueryData.MinPlayers =
-      MinPlayers != null ? parseInt(MinPlayers) : undefined;
-    mapQueryData.MaxPlayers =
-      MaxPlayers != null ? parseInt(MaxPlayers) : undefined;
-    mapQueryData.bDisableKitRestrictions = bDisableKitRestrictions != null;
-    mapQueryData.bBotAutofill = bBotAutofill != null;
-    mapQueryData.BluforNumBots =
+    const BluforFaction = /\?Bluforfaction=(\w+)/gi.exec(query)?.[1];
+    const OpforFaction = /\?Opforfaction=(\w+)/gi.exec(query)?.[1];
+    const Game = /\?game=(\/\w+\/[\w._]+)/gi.exec(query)?.[1];
+    const MinPlayers = /\?MinPlayers=(\d+)/gi.exec(query)?.[1];
+    const MaxPlayers = /\?MaxPlayers=(\d+)/gi.exec(query)?.[1];
+    const bDisableKitRestrictions = /\?(bDisableKitRestrictions)/gi.exec(
+      query,
+    )?.[1];
+    const bBotAutofill = /\?(bBotAutofill)/gi.exec(query)?.[1];
+    const BluforNumBots = /\?BluforNumBots=(\d+)/gi.exec(query)?.[1];
+    const OpforNumBots = /\?OpforNumBots=(\d+)/gi.exec(query)?.[1];
+    const BluforNumTickets = /\?BluforNumTickets=(\d+)/gi.exec(query)?.[1];
+    const OpforNumTickets = /\?OpforNumTickets=(\d+)/gi.exec(query)?.[1];
+    const AutoFillHuman = /\?AutoFillHuman=([01])/gi.exec(query)?.[1];
+    parsed.Map = map as Maps;
+    parsed.Game = Game;
+    parsed.BluforFaction = BluforFaction;
+    parsed.OpforFaction = OpforFaction;
+    parsed.MinPlayers = MinPlayers != null ? parseInt(MinPlayers) : undefined;
+    parsed.MaxPlayers = MaxPlayers != null ? parseInt(MaxPlayers) : undefined;
+    parsed.bDisableKitRestrictions = bDisableKitRestrictions != null;
+    parsed.bBotAutofill = bBotAutofill != null;
+    parsed.BluforNumBots =
       BluforNumBots != null ? parseInt(BluforNumBots) : undefined;
-    mapQueryData.OpforNumBots =
+    parsed.OpforNumBots =
       OpforNumBots != null ? parseInt(OpforNumBots) : undefined;
-    mapQueryData.BluforNumTickets =
+    parsed.BluforNumTickets =
       BluforNumTickets != null ? parseInt(BluforNumTickets) : undefined;
-    mapQueryData.OpforNumTickets =
+    parsed.OpforNumTickets =
       OpforNumTickets != null ? parseInt(OpforNumTickets) : undefined;
-    mapQueryData.AutoFillHuman =
+    parsed.AutoFillHuman =
       AutoFillHuman != null ? (parseInt(AutoFillHuman) as 0) : undefined;
-    return new MapQuery(mapQueryData);
+    return new MapQuery(parsed);
   }
   /**
    * Generate the Level String
