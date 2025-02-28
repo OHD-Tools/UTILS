@@ -1,5 +1,5 @@
 {
-  "name": "@ohd-tools/ohd-config",
+  "name": "@ohd-tools/utils",
   "version": "0.12.0",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -44,7 +44,7 @@
     "url": "https://github.com/afocommunity/OHD-RCON/issues"
   },
   "homepage": "https://github.com/afocommunity/OHD-RCON#readme",
-  "description": "An RCON Interface for Operation: Harsh Doorstop",
+  "description": "Utilities for OHD-RCON",
   "dependencies": {
     "ini": "^5.0.0"
   }
