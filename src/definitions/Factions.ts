@@ -12,7 +12,7 @@ enum Factions {
   //? Gulf War / Cold War
 
   BP_HDFactionInfo_UnitedStates = 'BP_HDFactionInfo_UnitedStates',
-  BP_HDFactionInfo_UnitedStates_ = 'BP_HDFactionInfo_UnitedStates_',
+  BP_HDFactionInfo_UnitedStates_M81 = 'BP_HDFactionInfo_UnitedStates_M81',
   BP_HDFactionInfo_Russians = 'BP_HDFactionInfo_Russians',
   BP_HDFactionInfo_Russians_VDV = 'BP_HDFactionInfo_Russians_VDV',
 
