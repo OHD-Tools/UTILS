@@ -38,17 +38,16 @@ export interface IGameIni {
   Voting_DisableVACBanCheckWhileAdminIsOnline: boolean;
   Voting_OnlyAdminsCanInitiateVote: boolean;
 
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
-  // AccessControl_;
+  Access_DenyVACBannedUsers: boolean;
+  Access_DenyGameBannedUsers: boolean;
+  Access_DenyCommunityBannedUsers: boolean;
+  Access_DenyUsersWithPrivateProfiles: boolean;
+  Access_NumVACBansAllowed: number;
+  Access_NumGameBansAllowed: number;
+  Access_NumBanAgeDaysAllowed: number;
+  Access_MinRequiredAccountAgeDays: number;
+  Access_MinRequiredAccountPlaytimeHours: number;
+  Access_MaxLoginQueryCacheAgeMinutes: number;
 }
 type GameIniRawContents = {
   ['/Script/RCON']: {
@@ -150,6 +149,17 @@ const gameIniDefault: IGameIni = {
   Voting_DenyVACBannedUsersFromVoting: false,
   Voting_DisableVACBanCheckWhileAdminIsOnline: false,
   Voting_OnlyAdminsCanInitiateVote: false,
+
+  Access_DenyVACBannedUsers: false,
+  Access_DenyGameBannedUsers: false,
+  Access_DenyCommunityBannedUsers: false,
+  Access_DenyUsersWithPrivateProfiles: false,
+  Access_NumVACBansAllowed: 0,
+  Access_NumGameBansAllowed: 0,
+  Access_NumBanAgeDaysAllowed: 30,
+  Access_MinRequiredAccountAgeDays: 7,
+  Access_MinRequiredAccountPlaytimeHours: 0,
+  Access_MaxLoginQueryCacheAgeMinutes: 60.0,
 };
 
 const toBoolean = (b: boolean): IniBoolean => (b ? 'True' : 'False');
@@ -159,13 +169,15 @@ const toString = (s: string): IniString => s;
 export class GameINI {
   public Settings!: IGameIni;
   constructor(settings: Partial<IGameIni> | string = {} as IGameIni) {
-    if (typeof settings == 'string') return GameINI.parse(settings);
+    if (typeof settings == 'string') {
+      const ini = GameINI.parse(settings);
+      this.Settings = ini.Settings;
+      return;
+    }
     this.Settings = { ...gameIniDefault, ...settings };
   }
 
   public static parse(fileContent: string): GameINI {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const config: IGameIni = {} as IGameIni;
     const raw = parse(fileContent) as GameIniRawContents;
     return new GameINI(raw as unknown as IGameIni);
   }
@@ -225,23 +237,33 @@ export class GameINI {
       },
       '/Script/HDMain': {
         HDGameSession: {
-          bSupportersOnlyWhitelist: 'True',
+          bSupportersOnlyWhitelist: toBoolean(
+            s.GameSession_SupportersOnlyWhitelist,
+          ),
         },
         HDBaseGameMode: {
-          bRandomPlayerTeamBalance: 'True',
+          bRandomPlayerTeamBalance: toBoolean(
+            s.Gamemode_RandomPlayerTeamBalance,
+          ),
         },
       },
       AccessControlSteam: {
-        bDenyVACBannedUsers: 'True',
-        bDenyGameBannedUsers: 'True',
-        bDenyCommunityBannedUsers: 'True',
-        bDenyUsersWithPrivateProfiles: 'True',
-        NumVACBansAllowed: '-1',
-        NumGameBansAllowed: '-1',
-        NumBanAgeDaysAllowed: '-1',
-        MinRequiredAccountAgeDays: '-1',
-        MinRequiredAccountPlaytimeHours: '-1',
-        MaxLoginQueryCacheAgeMinutes: '-1',
+        bDenyVACBannedUsers: toBoolean(s.Access_DenyVACBannedUsers),
+        bDenyGameBannedUsers: toBoolean(s.Access_DenyGameBannedUsers),
+        bDenyCommunityBannedUsers: toBoolean(s.Access_DenyCommunityBannedUsers),
+        bDenyUsersWithPrivateProfiles: toBoolean(
+          s.Access_DenyUsersWithPrivateProfiles,
+        ),
+        NumVACBansAllowed: toNumber(s.Access_NumVACBansAllowed),
+        NumGameBansAllowed: toNumber(s.Access_NumGameBansAllowed),
+        NumBanAgeDaysAllowed: toNumber(s.Access_NumBanAgeDaysAllowed),
+        MinRequiredAccountAgeDays: toNumber(s.Access_MinRequiredAccountAgeDays),
+        MinRequiredAccountPlaytimeHours: toNumber(
+          s.Access_MinRequiredAccountPlaytimeHours,
+        ),
+        MaxLoginQueryCacheAgeMinutes: toNumber(
+          s.Access_MaxLoginQueryCacheAgeMinutes,
+        ),
       },
     };
     return stringify(fileRaw, { sort: true });
